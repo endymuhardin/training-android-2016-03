@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BPJS Kesehatan</string>
+    <string name="lblEmail">Email</string>
+    <string name="lblPassword">Password</string>
+    <string name="lblLogin">Login</string>
+    <string name="lblRegister">Register</string>
 </resources>
