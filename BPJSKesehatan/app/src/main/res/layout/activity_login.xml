@@ -7,49 +7,16 @@
     android:layout_height="match_parent"
     tools:context="com.brainmatics.bpjs.bpjskesehatan.activity.LoginActivity">
 
-    <Button
-        android:text="@string/lblRegister"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnRegister"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/btnLogin"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="41dp"
-        app:layout_constraintLeft_toLeftOf="@+id/btnLogin" />
-
-    <Button
-        android:text="@string/lblLogin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnLogin"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegister"
-        app:layout_constraintRight_toRightOf="@+id/txtPassword"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintLeft_toLeftOf="@+id/txtPassword" />
-
-    <EditText
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/txtPassword"
-        android:hint="@string/lblPassword"
-        android:textAlignment="center"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+    <ImageView
+        android:layout_width="277dp"
+        android:layout_height="199dp"
+        android:src="@drawable/logo_full"
+        android:id="@+id/imgLogo"
         app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="32dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:inputType="textPassword" />
+        app:layout_constraintBottom_toTopOf="@+id/txtEmail"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/lblLogo" />
 
     <EditText
         android:layout_width="0dp"
@@ -65,7 +32,53 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        app:layout_constraintHorizontal_bias="0.71" />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/txtPassword"
+        android:hint="@string/lblPassword"
+        android:textAlignment="center"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:inputType="textPassword" />
+
+    <Button
+        android:text="@string/lblLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnLogin"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="@+id/btnRegister"
+        app:layout_constraintRight_toRightOf="@+id/txtPassword"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintLeft_toLeftOf="@+id/txtPassword" />
+
+    <Button
+        android:text="@string/lblRegister"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnRegister"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/btnLogin"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="41dp"
+        app:layout_constraintLeft_toLeftOf="@+id/btnLogin" />
+
 </android.support.constraint.ConstraintLayout>
