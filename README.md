@@ -2,7 +2,7 @@
 
 Training membuat aplikasi Android.
 
-Materi training:
+## Materi training ##
 
 * Arsitektur Aplikasi Android
 
@@ -13,6 +13,25 @@ Materi training:
     * Broadcast Receiver
 
 ![Arsitektur Aplikasi](catatan/img/arsitektur-aplikasi-android.jpg)
+
+
+## Studi Kasus ##
+
+Screen :
+
+* Login
+* Info Peserta
+* Info Tagihan
+* Detail Tagihan
+* Setting Server URL
+
+Backend Service :
+
+* Login
+* Logout
+* Get daftar tagihan
+* Post info peserta + upload 
+* Input tagihan + notifikasi ke android
 
 ## Referensi ##
 
