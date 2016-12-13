@@ -30,6 +30,8 @@ public class Peserta {
     @NotNull @Past
     @Column(name = "tanggal_lahir")
     private LocalDate tanggalLahir;
+    
+    private String foto;
 
     public String getId() {
         return id;
@@ -62,6 +64,13 @@ public class Peserta {
     public void setTanggalLahir(LocalDate tanggalLahir) {
         this.tanggalLahir = tanggalLahir;
     }
-    
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
     
 }

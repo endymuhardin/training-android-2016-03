@@ -7,6 +7,7 @@ public class Peserta {
     private String nama;
     private String email;
     private Date tanggalLahir;
+    private String foto;
 
     public String getId() {
         return id;
@@ -38,5 +39,13 @@ public class Peserta {
 
     public void setTanggalLahir(Date tanggalLahir) {
         this.tanggalLahir = tanggalLahir;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

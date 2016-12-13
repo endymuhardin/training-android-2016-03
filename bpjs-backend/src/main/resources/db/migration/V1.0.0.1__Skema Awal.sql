@@ -3,6 +3,7 @@ create table peserta (
   nama varchar(255) not null,
   email varchar(255) not null,
   tanggal_lahir date not null, 
+  foto varchar(255),
   primary key (id), 
   unique (email)
 );
