@@ -20,4 +20,6 @@
 
     <string name="lblFrameWelcome">Selamat Datang</string>
     <string name="lblFrameTagihan">Screen Tagihan</string>
+    <string name="lblFramePeserta">Screen Peserta</string>
+    <string name="lblFrameSetting">Screen Setting</string>
 </resources>
