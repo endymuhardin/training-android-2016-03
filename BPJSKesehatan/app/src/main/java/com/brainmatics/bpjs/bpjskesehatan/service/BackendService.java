@@ -25,6 +25,7 @@ public class BackendService {
             // data dummy, nantinya diambil dari server
             Peserta p = new Peserta();
             p.setId("p1001");
+            p.setNomor("001001001");
             p.setNama("Peserta Test 1001");
             p.setEmail("pt1001@contoh.com");
             p.setTanggalLahir(new Date());

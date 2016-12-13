@@ -21,6 +21,9 @@ public class Peserta {
     private String id;
     
     @NotNull @NotEmpty
+    private String nomor;
+    
+    @NotNull @NotEmpty
     private String nama;
     
     @NotNull @NotEmpty @Email
@@ -39,6 +42,14 @@ public class Peserta {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getNomor() {
+        return nomor;
+    }
+
+    public void setNomor(String nomor) {
+        this.nomor = nomor;
     }
 
     public String getNama() {

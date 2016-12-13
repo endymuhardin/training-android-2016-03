@@ -38,7 +38,7 @@ public class TagihanListAdapter extends ArrayAdapter<Tagihan> {
         txtTanggalTagihan.setText(formatter.format(t.getTanggalTagihan()));
 
         TextView txtPeserta = (TextView) row.findViewById(R.id.txtPeserta);
-        txtPeserta.setText(t.getPeserta().getNama());
+        txtPeserta.setText(t.getPeserta().getNomor() + " - " + t.getPeserta().getNama());
 
         TextView txtNilai = (TextView) row.findViewById(R.id.txtNilaiTagihan);
         txtNilai.setText("Rp. "+t.getNilai().toString());

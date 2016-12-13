@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Peserta {
     private String id;
+    private String nomor;
     private String nama;
     private String email;
     private Date tanggalLahir;
@@ -15,6 +16,14 @@ public class Peserta {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getNomor() {
+        return nomor;
+    }
+
+    public void setNomor(String nomor) {
+        this.nomor = nomor;
     }
 
     public String getNama() {
