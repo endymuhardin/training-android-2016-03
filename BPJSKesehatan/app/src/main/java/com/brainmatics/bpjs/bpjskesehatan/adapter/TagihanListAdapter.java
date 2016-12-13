@@ -1,7 +1,6 @@
 package com.brainmatics.bpjs.bpjskesehatan.adapter;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -14,12 +13,13 @@ import com.brainmatics.bpjs.bpjskesehatan.R;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Tagihan;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class TagihanListAdapter extends ArrayAdapter<Tagihan> {
     private int layout;
     private SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");
 
-    public TagihanListAdapter(Context context, int resource, Tagihan[] objects) {
+    public TagihanListAdapter(Context context, int resource, List<Tagihan> objects) {
         super(context, resource, objects);
         this.layout = resource;
     }
