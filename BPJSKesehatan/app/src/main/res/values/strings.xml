@@ -5,4 +5,16 @@
     <string name="lblLogin">Login</string>
     <string name="lblRegister">Register</string>
     <string name="lblLogo">Logo BPJS</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="lblMenuTagihan">Tagihan</string>
+    <string name="lblMenuPeserta">Peserta</string>
+    <string name="lblMenuLogout">Logout</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
