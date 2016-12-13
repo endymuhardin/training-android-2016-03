@@ -150,7 +150,7 @@ public class NavigationDrawerFragment extends Fragment {
                     return;
                 }
 
-                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                //getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 
             @Override
