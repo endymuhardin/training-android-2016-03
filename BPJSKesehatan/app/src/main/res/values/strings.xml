@@ -17,4 +17,7 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="lblFrameWelcome">Selamat Datang</string>
 </resources>
