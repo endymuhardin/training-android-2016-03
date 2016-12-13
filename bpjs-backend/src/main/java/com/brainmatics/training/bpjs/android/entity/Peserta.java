@@ -1,5 +1,6 @@
 package com.brainmatics.training.bpjs.android.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +26,7 @@ public class Peserta {
     @NotNull @NotEmpty @Email
     private String email;
     
+    @JsonFormat(pattern="yyyy-MM-dd")
     @NotNull @Past
     @Column(name = "tanggal_lahir")
     private LocalDate tanggalLahir;

@@ -1,5 +1,6 @@
 package com.brainmatics.training.bpjs.android.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -24,10 +25,12 @@ public class Tagihan {
     @NotNull
     private Peserta peserta;
     
+    @JsonFormat(pattern="yyyy-MM-dd")
     @NotNull
     @Column(name = "tanggal_tagihan")
     private LocalDate tanggalTagihan;
     
+    @JsonFormat(pattern="yyyy-MM-dd")
     @NotNull
     @Column(name = "tanggal_jatuh_tempo")
     private LocalDate tanggalJatuhTempo;
