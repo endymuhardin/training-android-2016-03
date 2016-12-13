@@ -13,6 +13,7 @@ public class BpjsDbHelper extends SQLiteOpenHelper {
     private static final String CREATE_TBL_PESERTA = "create table "
             + PesertaDb.NAMA_TABEL + "( "
             + PesertaDb._ID +" INT PRIMARY KEY, "
+            + PesertaDb.KOLOM_ID +" TEXT, "
             + PesertaDb.KOLOM_NOMOR +" TEXT, "
             + PesertaDb.KOLOM_NAMA +" TEXT, "
             + PesertaDb.KOLOM_EMAIL +" TEXT, "
@@ -40,6 +41,7 @@ public class BpjsDbHelper extends SQLiteOpenHelper {
 
     public static class PesertaDb implements BaseColumns {
         public static final String NAMA_TABEL = "peserta";
+        public static final String KOLOM_ID = "id";
         public static final String KOLOM_NOMOR = "nomor";
         public static final String KOLOM_NAMA = "nama";
         public static final String KOLOM_EMAIL = "email";
