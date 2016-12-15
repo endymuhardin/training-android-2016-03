@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "739117335497",
+    "firebase_url": "https://bpjskesehatan-456f7.firebaseio.com",
+    "project_id": "bpjskesehatan-456f7",
+    "storage_bucket": "bpjskesehatan-456f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739117335497:android:35055788d89dfcf4",
+        "android_client_info": {
+          "package_name": "com.brainmatics.bpjs.bpjskesehatan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739117335497-enevafcod4dh09gg5ehhmu9tad0bnmko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW2effQrywB17S_jhMNEg8C3sh5Ja3tmM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739117335497-enevafcod4dh09gg5ehhmu9tad0bnmko.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
