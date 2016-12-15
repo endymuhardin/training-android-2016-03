@@ -10,26 +10,27 @@ import android.widget.ListView;
 
 import com.brainmatics.bpjs.bpjskesehatan.R;
 import com.brainmatics.bpjs.bpjskesehatan.adapter.TagihanListAdapter;
-import com.brainmatics.bpjs.bpjskesehatan.service.BackendService;
+import com.brainmatics.bpjs.bpjskesehatan.db.BpjsDbHelper;
 
 import java.util.List;
 
 public class TagihanFragment extends Fragment {
 
-    private BackendService backendService = new BackendService();
+    private BpjsDbHelper dbHelper;
 
     public TagihanFragment() {
-        // Required empty public constructor
-    }
 
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        dbHelper = new BpjsDbHelper(getActivity());
+
         TagihanListAdapter tagihanListAdapter = new TagihanListAdapter(getActivity(),
                 R.layout.lv_tagihan,
-                backendService.getDaftarTagihan());
+                dbHelper.semuaTagihan());
 
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_tagihan, container, false);

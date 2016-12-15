@@ -25,6 +25,14 @@ public class AplikasiBpjs extends Application {
         data.put(BpjsDbHelper.PesertaDb.KOLOM_FOTO, "f100.jpg");
         database.insert(BpjsDbHelper.PesertaDb.NAMA_TABEL, null, data);
 
+        ContentValues tagihan = new ContentValues();
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_ID, "t123");
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_ID_PESERTA, "abc123");
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_TANGGAL_TAGIHAN, "2016-01-01");
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_TANGGAL_JATUH_TEMPO, "2016-01-20");
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_NILAI, "123000.00");
+        database.insert(BpjsDbHelper.TagihanDb.NAMA_TABEL, null, tagihan);
+
         db.close();
     }
 }
