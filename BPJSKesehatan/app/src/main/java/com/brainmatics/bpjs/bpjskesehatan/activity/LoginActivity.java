@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.brainmatics.bpjs.bpjskesehatan.R;
+import com.brainmatics.bpjs.bpjskesehatan.db.BpjsDbHelper;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Page;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Tagihan;
 import com.brainmatics.bpjs.bpjskesehatan.service.BackendService;
@@ -34,7 +35,7 @@ public class LoginActivity extends Activity {
     }
 
     public void btnRegistrasiClicked(View v){
-        
+
         new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... voids) {
@@ -44,9 +45,16 @@ public class LoginActivity extends Activity {
                             Page<Tagihan> hasil = service.semuaTagihan("p001");
                             Log.d(TAG, "Jumlah data : "+hasil.getTotalElements());
                             List<Tagihan> data = hasil.getContent();
+
+                            BpjsDbHelper db = new BpjsDbHelper(LoginActivity.this);
+                            if(!data.isEmpty()){
+                                db.kosongkanTabelTagihan();
+                            }
+
                             for(Tagihan t : data){
                                 Log.d(TAG, "Tanggal Tagihan : "+t.getTanggalTagihan());
                                 Log.d(TAG, "Nilai Tagihan : "+t.getNilai());
+                                db.insertTagihan(t);
                             }
                         } catch (Exception err){
                             Log.e(TAG, err.getMessage());
