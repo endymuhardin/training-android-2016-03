@@ -80,6 +80,7 @@
         app:layout_constraintRight_toRightOf="@+id/btnLogin"
         tools:layout_constraintLeft_creator="1"
         android:layout_marginBottom="41dp"
-        app:layout_constraintLeft_toLeftOf="@+id/btnLogin" />
+        app:layout_constraintLeft_toLeftOf="@+id/btnLogin"
+        android:onClick="btnRegistrasiClicked" />
 
 </android.support.constraint.ConstraintLayout>
