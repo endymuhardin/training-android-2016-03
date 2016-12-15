@@ -1,5 +1,6 @@
 package com.brainmatics.bpjs.bpjskesehatan.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,7 +21,7 @@ public class BpjsDbHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "BpjsDbHelper";
 
-    private static final int VERSION = 2;
+    private static final int VERSION = 1;
     private static final String NAMA_DB = "bpjs.db";
 
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -61,7 +62,6 @@ public class BpjsDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TBL_PESERTA);
         db.execSQL(CREATE_TBL_TAGIHAN);
-        Log.d(TAG, CREATE_TBL_TAGIHAN);
     }
 
     @Override
@@ -146,5 +146,32 @@ public class BpjsDbHelper extends SQLiteOpenHelper {
         }
         db.close();
         return null;
+    }
+
+    public void insertPeserta(Peserta p){
+        ContentValues data = new ContentValues();
+        data.put(BpjsDbHelper.PesertaDb.KOLOM_ID, p.getId());
+        data.put(BpjsDbHelper.PesertaDb.KOLOM_NOMOR, p.getNomor());
+        data.put(BpjsDbHelper.PesertaDb.KOLOM_NAMA, p.getNama());
+        data.put(BpjsDbHelper.PesertaDb.KOLOM_EMAIL, p.getEmail());
+        data.put(BpjsDbHelper.PesertaDb.KOLOM_TANGGAL_LAHIR, formatter.format(p.getTanggalLahir()));
+        data.put(BpjsDbHelper.PesertaDb.KOLOM_FOTO, p.getFoto());
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(PesertaDb.NAMA_TABEL, null, data);
+        db.close();
+    }
+
+    public void insertTagihan(Tagihan t){
+        ContentValues tagihan = new ContentValues();
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_ID, t.getId());
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_ID_PESERTA, t.getPeserta().getId());
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_TANGGAL_TAGIHAN, formatter.format(t.getTanggalTagihan()));
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_TANGGAL_JATUH_TEMPO, formatter.format(t.getTanggalJatuhTempo()));
+        tagihan.put(BpjsDbHelper.TagihanDb.KOLOM_NILAI, t.getNilai().toString());
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TagihanDb.NAMA_TABEL, null, tagihan);
+        db.close();
     }
 }
