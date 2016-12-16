@@ -4,6 +4,8 @@ package com.brainmatics.bpjs.bpjskesehatan.fragment;
 import android.Manifest;
 import android.app.Fragment;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +23,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -35,6 +41,7 @@ public class PesertaFragment extends Fragment implements
     private Location lokasiSaatIni;
     private TextView txtLatitude;
     private TextView txtLongitude;
+    private TextView txtAlamat;
 
     public PesertaFragment() {
         // Required empty public constructor
@@ -51,6 +58,7 @@ public class PesertaFragment extends Fragment implements
 
         txtLatitude = (TextView) fragmentView.findViewById(R.id.txtLatitude);
         txtLongitude = (TextView) fragmentView.findViewById(R.id.txtLongitude);
+        txtAlamat = (TextView) fragmentView.findViewById(R.id.txtAlamat);
 
         return fragmentView;
     }
@@ -100,6 +108,21 @@ public class PesertaFragment extends Fragment implements
 
             txtLatitude.setText(String.valueOf(lokasiSaatIni.getLatitude()));
             txtLongitude.setText(String.valueOf(lokasiSaatIni.getLongitude()));
+            updateAlamat();
+        }
+    }
+
+    private void updateAlamat(){
+
+        try {
+            Geocoder geo = new Geocoder(getActivity(), Locale.getDefault());
+            List<Address> hasil = geo.getFromLocation(lokasiSaatIni.getLatitude(), lokasiSaatIni.getLongitude(), 1);
+            if(!hasil.isEmpty()){
+                Address alamat = hasil.get(0);
+                txtAlamat.setText(alamat.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
