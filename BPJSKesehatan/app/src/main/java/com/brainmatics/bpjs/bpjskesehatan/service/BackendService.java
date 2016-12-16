@@ -131,14 +131,14 @@ public class BackendService {
 
     public void simpanPeserta(Peserta peserta, File foto) throws IOException {
         RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), foto);
+                RequestBody.create(MediaType.parse("image/jpeg"), foto);
 
         MultipartBody.Part fotoPart =
                 MultipartBody.Part.createFormData("foto", foto.getName(), requestFile);
 
         String pesertaJson = new Gson().toJson(peserta);
         RequestBody requestPeserta =
-                RequestBody.create(MediaType.parse("multipart/form-data"), pesertaJson);
+                RequestBody.create(MediaType.parse("application/json"), pesertaJson);
         backend.simpanPeserta(requestPeserta, fotoPart).execute();
     }
 }
