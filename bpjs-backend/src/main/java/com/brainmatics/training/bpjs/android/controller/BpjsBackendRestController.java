@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -96,11 +97,23 @@ public class BpjsBackendRestController {
     }
     
     @RequestMapping(method = RequestMethod.POST, value = "/peserta/")
-    public void simpanPeserta(@RequestBody Peserta p, MultipartFile foto){
-        System.out.println("Nomor : "+p.getNomor());
-        System.out.println("Nama : "+p.getNama());
+    public void simpanPeserta(@RequestPart("peserta") Peserta p, 
+            @RequestPart("foto") MultipartFile foto){
         
-        System.out.println("Content type : "+foto.getContentType());
-        System.out.println("Ukuran : "+foto.getSize());
+        System.out.println("Menerima upload");
+        
+        if(p != null) {
+            System.out.println("Nomor : "+p.getNomor());
+            System.out.println("Nama : "+p.getNama());
+        } else { 
+            System.out.println("Peserta null"); 
+        }
+        
+        if(foto != null) {
+            System.out.println("Content type : "+foto.getContentType());
+            System.out.println("Ukuran : "+foto.getSize());
+        } else { 
+            System.out.println("Foto null"); 
+        }
     }
 }
