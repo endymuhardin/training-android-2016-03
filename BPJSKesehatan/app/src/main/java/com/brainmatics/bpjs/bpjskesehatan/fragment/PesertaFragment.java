@@ -218,6 +218,9 @@ public class PesertaFragment extends Fragment implements
 
             Bitmap fotoKecil = BitmapFactory.decodeFile(lokasiFotoFullSize, opsi);
             imgFoto.setImageBitmap(fotoKecil);
+
+            // cara upload bisa dilihat di sini
+            // https://futurestud.io/tutorials/retrofit-2-how-to-upload-files-to-server
         }
     }
 
