@@ -214,75 +214,84 @@ public class PesertaFragment extends Fragment implements
                 Log.d(TAG, "Gagal ambil foto");
                 return;
             }
-
-            // foto selesai diambil
-            Log.d(TAG, "Lokasi foto yang ukuran asli ada di "+lokasiFotoFullSize);
-            BitmapFactory.Options opsi = new BitmapFactory.Options();
-            opsi.inJustDecodeBounds = true; // ambil metadata aja, jangan load filenya
-            BitmapFactory.decodeFile(lokasiFotoFullSize, opsi);
-            Log.d(TAG, "Ukuran asli : "+opsi.outWidth +" x "+opsi.outHeight);
-
-            // resize foto
-            int ukuranFoto = Math.min(opsi.outHeight, opsi.outWidth);
-            int skala = 1;
-            int ukuranAkhir = ukuranFoto;
-
-            while(ukuranAkhir > 80){
-                skala *= 2;
-                ukuranAkhir = ukuranAkhir / 2;
-            }
-
-            Log.d(TAG, "Skala : " + skala);
-
-            // sekarang baru load fotonya
-            opsi.inJustDecodeBounds = false;
-            opsi.inSampleSize = skala;
-
-            Bitmap fotoKecil = BitmapFactory.decodeFile(lokasiFotoFullSize, opsi);
-            imgFoto.setImageBitmap(fotoKecil);
-
-            // upload foto
-
-            new AsyncTask<Void, Void, Void>(){
-
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    Peserta peserta = new Peserta();
-                    peserta.setNomor(UUID.randomUUID().toString());
-                    peserta.setNama("Peserta Dummy");
-                    peserta.setEmail("p@p.com");
-                    peserta.setFoto("foto.jpg");
-                    peserta.setTanggalLahir(new Date());
-                    try {
-                        new BackendService(getActivity())
-                                .simpanPeserta(peserta, fotoAsli);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-            }.execute();
-
-            // cara upload bisa dilihat di sini
-            // https://futurestud.io/tutorials/retrofit-2-how-to-upload-files-to-server
+            tampilkanFoto();
+            uploadFoto();
         }
+    }
+
+    private void tampilkanFoto() {
+        // foto selesai diambil
+        Log.d(TAG, "Lokasi foto yang ukuran asli ada di "+lokasiFotoFullSize);
+        BitmapFactory.Options opsi = new BitmapFactory.Options();
+        opsi.inJustDecodeBounds = true; // ambil metadata aja, jangan load filenya
+        BitmapFactory.decodeFile(lokasiFotoFullSize, opsi);
+        Log.d(TAG, "Ukuran asli : "+opsi.outWidth +" x "+opsi.outHeight);
+
+        // resize foto
+        int ukuranFoto = Math.min(opsi.outHeight, opsi.outWidth);
+        int skala = 1;
+        int ukuranAkhir = ukuranFoto;
+
+        while(ukuranAkhir > 80){
+            skala *= 2;
+            ukuranAkhir = ukuranAkhir / 2;
+        }
+
+        Log.d(TAG, "Skala : " + skala);
+
+        // sekarang baru load fotonya
+        opsi.inJustDecodeBounds = false;
+        opsi.inSampleSize = skala;
+
+        Bitmap fotoKecil = BitmapFactory.decodeFile(lokasiFotoFullSize, opsi);
+        imgFoto.setImageBitmap(fotoKecil);
+    }
+
+    private void uploadFoto() {
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Peserta peserta = new Peserta();
+                peserta.setNomor(UUID.randomUUID().toString());
+                peserta.setNama("Peserta Dummy");
+                peserta.setEmail("p@p.com");
+                peserta.setFoto("foto.jpg");
+                peserta.setTanggalLahir(new Date());
+                try {
+                    new BackendService(getActivity())
+                            .simpanPeserta(peserta, fotoAsli);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.d(TAG, "Koneksi Google API Client gagal");
     }
 
     public void btnSimpanClicked(View v){
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... id) {
-                String nama = null;
+                String nama = updateTagihan(id[0]);
+                return nama;
+            }
 
+            @Override
+            protected void onPostExecute(String nama) {
+                tampilkanNotifikasi(nama);
+
+            }
+
+            private String updateTagihan(String peserta) {
                 try {
-
                     BackendService service = new BackendService(getActivity());
-                    Page<Tagihan> hasil = service.semuaTagihan(id[0]);
+                    Page<Tagihan> hasil = service.semuaTagihan(peserta);
                     Log.d(TAG, "Jumlah data : "+hasil.getTotalElements());
                     List<Tagihan> data = hasil.getContent();
 
@@ -294,17 +303,15 @@ public class PesertaFragment extends Fragment implements
                         Log.d(TAG, "Tanggal Tagihan : "+t.getTanggalTagihan());
                         Log.d(TAG, "Nilai Tagihan : "+t.getNilai());
                         db.insertTagihan(t);
-                        nama = t.getPeserta().getNama();
+                        return t.getPeserta().getNama();
                     }
                 } catch (Exception err){
                     Log.e(TAG, err.getMessage());
                 }
-
-                return nama;
+                return null;
             }
 
-            @Override
-            protected void onPostExecute(String nama) {
+            private void tampilkanNotifikasi(String nama) {
                 // activity yang mau ditampilkan pada saat notifikasi diklik
                 Intent screenTagihan = new Intent(getActivity(), MainActivity.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(getActivity());
