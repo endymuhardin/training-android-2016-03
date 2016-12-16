@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api")
@@ -92,5 +93,14 @@ public class BpjsBackendRestController {
     @RequestMapping(method = RequestMethod.GET, value = "/token/")
     public Iterable<FcmToken> semuaToken(){
         return fcmTokenDao.findAll();
+    }
+    
+    @RequestMapping(method = RequestMethod.POST, value = "/peserta/")
+    public void simpanPeserta(@RequestBody Peserta p, MultipartFile foto){
+        System.out.println("Nomor : "+p.getNomor());
+        System.out.println("Nama : "+p.getNama());
+        
+        System.out.println("Content type : "+foto.getContentType());
+        System.out.println("Ukuran : "+foto.getSize());
     }
 }
