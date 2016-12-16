@@ -1,7 +1,6 @@
 package com.brainmatics.training.bpjs.android.controller;
 
 import com.brainmatics.training.bpjs.android.dao.FcmTokenDao;
-import com.brainmatics.training.bpjs.android.dao.PesertaDao;
 import com.brainmatics.training.bpjs.android.dao.TagihanDao;
 import com.brainmatics.training.bpjs.android.entity.FcmToken;
 import com.brainmatics.training.bpjs.android.entity.Peserta;
@@ -13,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +52,7 @@ public class BpjsBackendRestController {
         // kirim FCM ke device untuk notifikasi tagihan
         FcmToken token = fcmTokenDao.findByPeserta(t.getPeserta());
         if(token == null) {
+            System.out.println("Token tidak ditemukan untuk peserta "+t.getPeserta().getId());
             return;
         }
         
@@ -65,11 +66,12 @@ public class BpjsBackendRestController {
         fcmMsg.put("to", token.getFcmToken());
         fcmMsg.put("data", fcmData);
         
-        HttpHeaders httpRequestHeader = new HttpHeaders();
-        httpRequestHeader.set("Authorization", "key:"+FCM_KEY);
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add("Authorization", "key=" + FCM_KEY);
+        headers.add("Content-Type", "application/json");
         
-        HttpEntity<Map<String, Object>> httpRequestBody = new HttpEntity<>(fcmMsg, httpRequestHeader);
-        
+        HttpEntity<Map<String, Object>> httpRequestBody = new HttpEntity<>(fcmMsg, headers);
+        System.out.println("HTTP Request : "+httpRequestBody);
         RestTemplate httpClient = new RestTemplate();
         Map<String, Object> response = httpClient.postForObject(FCM_SERVER, httpRequestBody, Map.class);
         System.out.println("Response : "+response);
