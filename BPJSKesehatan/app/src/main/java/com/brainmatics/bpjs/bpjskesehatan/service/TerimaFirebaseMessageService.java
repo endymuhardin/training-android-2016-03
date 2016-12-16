@@ -88,7 +88,7 @@ public class TerimaFirebaseMessageService extends FirebaseMessagingService {
                                 .setContentText("Ada tagihan baru untuk peserta "
                                         +nama);
                 mBuilder.setContentIntent(tagihanPendingIntent);
-
+                mBuilder.setAutoCancel(true);
                 NotificationManager mNotificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
