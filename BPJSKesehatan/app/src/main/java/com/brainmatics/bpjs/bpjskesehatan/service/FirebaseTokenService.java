@@ -3,6 +3,7 @@ package com.brainmatics.bpjs.bpjskesehatan.service;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.brainmatics.bpjs.bpjskesehatan.db.BpjsDbHelper;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -15,8 +16,8 @@ public class FirebaseTokenService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-
-        // TODO: Implement this method to send any registration to your app's servers.
+        BpjsDbHelper db = new BpjsDbHelper(this);
+        db.simpanFcmToken(refreshedToken);
         sendRegistrationToServer(refreshedToken);
     }
 

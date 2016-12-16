@@ -2,9 +2,11 @@ package com.brainmatics.bpjs.bpjskesehatan.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.util.Log;
 
@@ -54,8 +56,11 @@ public class BpjsDbHelper extends SQLiteOpenHelper {
     private static final String DROP_TBL_PESERTA =
             "drop table if exists "+PesertaDb.NAMA_TABEL;
 
+    private Context context;
+
     public BpjsDbHelper(Context context) {
         super(context, NAMA_DB, null, VERSION);
+        this.context = context;
     }
 
     @Override
@@ -181,5 +186,20 @@ public class BpjsDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TagihanDb.NAMA_TABEL, null, tagihan);
         db.close();
+    }
+
+    public void simpanFcmToken(String token){
+        // Access Shared Preferences
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("fcm_token", token);
+        editor.apply();
+    }
+
+    public String getFcmToken(){
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return preferences.getString("fcm_token", null);
     }
 }
