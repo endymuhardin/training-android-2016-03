@@ -37,6 +37,7 @@ import com.brainmatics.bpjs.bpjskesehatan.R;
 import com.brainmatics.bpjs.bpjskesehatan.activity.MainActivity;
 import com.brainmatics.bpjs.bpjskesehatan.db.BpjsDbHelper;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Page;
+import com.brainmatics.bpjs.bpjskesehatan.dto.Peserta;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Tagihan;
 import com.brainmatics.bpjs.bpjskesehatan.service.BackendService;
 import com.brainmatics.bpjs.bpjskesehatan.service.TerimaFirebaseMessageService;
@@ -47,6 +48,7 @@ import com.google.android.gms.location.LocationServices;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -67,6 +69,7 @@ public class PesertaFragment extends Fragment implements
     private TextView txtLongitude;
     private TextView txtAlamat;
     private ImageView imgFoto;
+    private File fotoAsli;
 
     private String lokasiFotoFullSize;
 
@@ -187,15 +190,15 @@ public class PesertaFragment extends Fragment implements
                 .getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         Log.d(TAG, "Files dir : "+Environment.DIRECTORY_PICTURES);
         String namaFile = UUID.randomUUID().toString();
-        File foto = File.createTempFile(namaFile, ".jpg", folderPenyimpanan);
-        lokasiFotoFullSize = foto.getAbsolutePath();
+        fotoAsli = File.createTempFile(namaFile, ".jpg", folderPenyimpanan);
+        lokasiFotoFullSize = fotoAsli.getAbsolutePath();
 
         // 2. Jalankan kamera untuk mengambil foto
         Intent ambilFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(ambilFoto.resolveActivity(getActivity().getPackageManager()) != null){
             Uri uriFoto = FileProvider.getUriForFile(getActivity(),
                     "com.brainmatics.bpjs.bpjskesehatan.fileprovider",
-                    foto);
+                    fotoAsli);
             ambilFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriFoto);
             startActivityForResult(ambilFoto, REQUEST_FOTO);
         }
@@ -237,6 +240,28 @@ public class PesertaFragment extends Fragment implements
 
             Bitmap fotoKecil = BitmapFactory.decodeFile(lokasiFotoFullSize, opsi);
             imgFoto.setImageBitmap(fotoKecil);
+
+            // upload foto
+
+            new AsyncTask<Void, Void, Void>(){
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    Peserta peserta = new Peserta();
+                    peserta.setNomor(UUID.randomUUID().toString());
+                    peserta.setNama("Peserta Dummy");
+                    peserta.setEmail("p@p.com");
+                    peserta.setFoto("foto.jpg");
+                    peserta.setTanggalLahir(new Date());
+                    try {
+                        new BackendService(getActivity())
+                                .simpanPeserta(peserta, fotoAsli);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }.execute();
 
             // cara upload bisa dilihat di sini
             // https://futurestud.io/tutorials/retrofit-2-how-to-upload-files-to-server

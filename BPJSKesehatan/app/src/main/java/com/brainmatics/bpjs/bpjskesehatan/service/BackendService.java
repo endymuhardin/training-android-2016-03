@@ -9,14 +9,19 @@ import com.brainmatics.bpjs.bpjskesehatan.dto.FcmToken;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Page;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Peserta;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Tagihan;
+import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -122,5 +127,18 @@ public class BackendService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void simpanPeserta(Peserta peserta, File foto) throws IOException {
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), foto);
+
+        MultipartBody.Part fotoPart =
+                MultipartBody.Part.createFormData("foto", foto.getName(), requestFile);
+
+        String pesertaJson = new Gson().toJson(peserta);
+        RequestBody requestPeserta =
+                RequestBody.create(MediaType.parse("multipart/form-data"), pesertaJson);
+        backend.simpanPeserta(requestPeserta, fotoPart).execute();
     }
 }
