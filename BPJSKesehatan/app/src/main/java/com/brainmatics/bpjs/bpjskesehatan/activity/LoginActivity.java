@@ -2,6 +2,7 @@ package com.brainmatics.bpjs.bpjskesehatan.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,13 +30,23 @@ public class LoginActivity extends Activity {
         BpjsDbHelper db = new BpjsDbHelper(this);
         String token = db.getFcmToken();
         if(token != null){
+
             Log.d(TAG, "Token dari Shared Pref : "+token);
-            BackendService backendService = new BackendService();
-            try {
-                backendService.registrasiToken(token);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            new AsyncTask<String, Void, Void>(){
+
+                @Override
+                protected Void doInBackground(String... token) {
+                    BackendService backendService = new BackendService();
+                    try {
+                        backendService.registrasiToken(token[0]);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }.execute(token);
+
         } else {
             try {
                 Log.d(TAG, "Delete token");
