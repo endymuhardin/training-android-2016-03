@@ -1,7 +1,9 @@
 package com.brainmatics.training.bpjs.android.controller;
 
+import com.brainmatics.training.bpjs.android.dao.FcmTokenDao;
 import com.brainmatics.training.bpjs.android.dao.PesertaDao;
 import com.brainmatics.training.bpjs.android.dao.TagihanDao;
+import com.brainmatics.training.bpjs.android.entity.FcmToken;
 import com.brainmatics.training.bpjs.android.entity.Peserta;
 import com.brainmatics.training.bpjs.android.entity.Tagihan;
 import javax.validation.Valid;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class BpjsBackendRestController {
     
     @Autowired private TagihanDao tagihanDao;
+    @Autowired private FcmTokenDao fcmTokenDao;
+    
     
     @RequestMapping(method = RequestMethod.GET, value = "/tagihan/{peserta}/")
     public Page<Tagihan> cariTagihan(@PathVariable Peserta peserta, Pageable page){
@@ -36,5 +40,16 @@ public class BpjsBackendRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public void insertTagihan(@RequestBody @Valid Tagihan t){
         tagihanDao.save(t);
+    }
+    
+    @RequestMapping(method = RequestMethod.POST, value = "/token/{peserta}/")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registrasiToken(@RequestBody @Valid FcmToken t){
+        fcmTokenDao.save(t);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/token/")
+    public Iterable<FcmToken> semuaToken(){
+        return fcmTokenDao.findAll();
     }
 }

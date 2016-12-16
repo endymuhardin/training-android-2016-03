@@ -19,3 +19,11 @@ create table tagihan (
   primary key (id),
   foreign key (id_peserta) references peserta(id)
 );
+
+create table fcm_token (
+  id varchar(36),
+  id_peserta varchar(36) not null,
+  fcm_token varchar(255) not null,
+  primary key (id),
+  foreign key (id_peserta) references peserta(id)
+);
