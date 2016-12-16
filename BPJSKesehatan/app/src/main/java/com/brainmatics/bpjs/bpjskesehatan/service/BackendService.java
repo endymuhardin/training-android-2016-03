@@ -1,7 +1,9 @@
 package com.brainmatics.bpjs.bpjskesehatan.service;
 
 
+import com.brainmatics.bpjs.bpjskesehatan.dto.FcmToken;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Page;
+import com.brainmatics.bpjs.bpjskesehatan.dto.Peserta;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Tagihan;
 
 import java.io.IOException;
@@ -29,5 +31,19 @@ public class BackendService {
 
     public Page<Tagihan> semuaTagihan(String peserta) throws IOException {
         return backend.ambilTagihan(peserta).execute().body();
+    }
+
+    public void registrasiToken(String token) throws IOException {
+        // sementara id peserta dihardcode dulu
+        String idPeserta = "p001";
+
+        // request object
+        Peserta p = new Peserta();
+        p.setId(idPeserta);
+        FcmToken fcmToken = new FcmToken();
+        fcmToken.setPeserta(p);
+        fcmToken.setFcmToken(token);
+
+        backend.registrasiToken(idPeserta, fcmToken).execute();
     }
 }
