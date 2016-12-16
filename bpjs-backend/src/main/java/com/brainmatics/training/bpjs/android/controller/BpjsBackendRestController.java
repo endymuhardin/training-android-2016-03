@@ -105,6 +105,8 @@ public class BpjsBackendRestController {
         if(p != null) {
             System.out.println("Nomor : "+p.getNomor());
             System.out.println("Nama : "+p.getNama());
+            System.out.println("Email : "+p.getEmail());
+            System.out.println("Tanggal Lahir : "+p.getTanggalLahir());
         } else { 
             System.out.println("Peserta null"); 
         }
