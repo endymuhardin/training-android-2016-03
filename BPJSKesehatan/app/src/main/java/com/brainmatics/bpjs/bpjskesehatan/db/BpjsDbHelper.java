@@ -202,4 +202,19 @@ public class BpjsDbHelper extends SQLiteOpenHelper {
                 .getDefaultSharedPreferences(context);
         return preferences.getString("fcm_token", null);
     }
+
+    public void simpanOauthToken(String token){
+        // Access Shared Preferences
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("access_token", token);
+        editor.apply();
+    }
+
+    public String getOauthToken(){
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return preferences.getString("access_token", null);
+    }
 }

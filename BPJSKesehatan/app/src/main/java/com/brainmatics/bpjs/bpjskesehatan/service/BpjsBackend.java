@@ -4,8 +4,12 @@ import com.brainmatics.bpjs.bpjskesehatan.dto.FcmToken;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Page;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Tagihan;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -17,4 +21,10 @@ public interface BpjsBackend {
 
     @POST("/api/token/{peserta}/")
     public Call<Void> registrasiToken(@Path("peserta") String idPeserta, @Body FcmToken token);
+
+    @POST("/oauth/token")
+    @FormUrlEncoded
+    public Call<Map<String, String>> login(
+            @Field("username") String username,
+            @Field("password") String password);
 }

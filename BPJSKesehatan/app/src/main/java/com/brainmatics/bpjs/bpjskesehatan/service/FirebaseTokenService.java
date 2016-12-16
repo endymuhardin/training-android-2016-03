@@ -27,7 +27,7 @@ public class FirebaseTokenService extends FirebaseInstanceIdService {
 
             @Override
             protected Void doInBackground(String... token) {
-                BackendService backendService = new BackendService();
+                BackendService backendService = new BackendService(FirebaseTokenService.this);
                 try {
                     Log.d(TAG, "Mengirim token ke server");
                     Log.d(TAG, "Token : "+token[0]);

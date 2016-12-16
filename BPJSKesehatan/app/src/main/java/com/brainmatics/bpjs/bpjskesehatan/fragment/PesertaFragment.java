@@ -4,6 +4,9 @@ package com.brainmatics.bpjs.bpjskesehatan.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,12 +15,15 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +35,11 @@ import android.widget.TextView;
 
 import com.brainmatics.bpjs.bpjskesehatan.R;
 import com.brainmatics.bpjs.bpjskesehatan.activity.MainActivity;
+import com.brainmatics.bpjs.bpjskesehatan.db.BpjsDbHelper;
+import com.brainmatics.bpjs.bpjskesehatan.dto.Page;
+import com.brainmatics.bpjs.bpjskesehatan.dto.Tagihan;
+import com.brainmatics.bpjs.bpjskesehatan.service.BackendService;
+import com.brainmatics.bpjs.bpjskesehatan.service.TerimaFirebaseMessageService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -85,6 +96,14 @@ public class PesertaFragment extends Fragment implements
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        Button btnSimpan = (Button) fragmentView.findViewById(R.id.btnSimpan);
+        btnSimpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnSimpanClicked(view);
             }
         });
 
@@ -227,6 +246,66 @@ public class PesertaFragment extends Fragment implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void btnSimpanClicked(View v){
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... id) {
+                String nama = null;
+
+                try {
+
+                    BackendService service = new BackendService(getActivity());
+                    Page<Tagihan> hasil = service.semuaTagihan(id[0]);
+                    Log.d(TAG, "Jumlah data : "+hasil.getTotalElements());
+                    List<Tagihan> data = hasil.getContent();
+
+                    BpjsDbHelper db = new BpjsDbHelper(getActivity());
+                    if(!data.isEmpty()){
+                        db.kosongkanTabelTagihan();
+                    }
+                    for(Tagihan t : data){
+                        Log.d(TAG, "Tanggal Tagihan : "+t.getTanggalTagihan());
+                        Log.d(TAG, "Nilai Tagihan : "+t.getNilai());
+                        db.insertTagihan(t);
+                        nama = t.getPeserta().getNama();
+                    }
+                } catch (Exception err){
+                    Log.e(TAG, err.getMessage());
+                }
+
+                return nama;
+            }
+
+            @Override
+            protected void onPostExecute(String nama) {
+                // activity yang mau ditampilkan pada saat notifikasi diklik
+                Intent screenTagihan = new Intent(getActivity(), MainActivity.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(getActivity());
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(screenTagihan);
+                PendingIntent tagihanPendingIntent =
+                        stackBuilder.getPendingIntent(0,
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                        );
+
+                // tampilkan notifikasi
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getActivity())
+                                .setSmallIcon(R.drawable.logo_only)
+                                .setContentTitle("Tagihan Baru")
+                                .setContentText("Ada tagihan baru untuk peserta "
+                                        +nama);
+                mBuilder.setContentIntent(tagihanPendingIntent);
+                mBuilder.setAutoCancel(true);
+                NotificationManager mNotificationManager =
+                        (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+                int notificationId = 100;
+                mNotificationManager.notify(notificationId, mBuilder.build());
+            }
+        }.execute("p001");
     }
 
 }

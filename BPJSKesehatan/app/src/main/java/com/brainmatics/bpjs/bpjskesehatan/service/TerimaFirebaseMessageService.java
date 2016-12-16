@@ -46,7 +46,7 @@ public class TerimaFirebaseMessageService extends FirebaseMessagingService {
 
                 try {
 
-                    BackendService service = new BackendService();
+                    BackendService service = new BackendService(TerimaFirebaseMessageService.this);
                     Page<Tagihan> hasil = service.semuaTagihan(id[0]);
                     Log.d(TAG, "Jumlah data : "+hasil.getTotalElements());
                     List<Tagihan> data = hasil.getContent();
