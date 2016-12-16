@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brainmatics.bpjs.bpjskesehatan.R;
+import com.brainmatics.bpjs.bpjskesehatan.activity.MainActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -28,7 +29,7 @@ public class PesertaFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "PesertaFragment";
-    private static final int REQUEST_GPS_PERMISSION = 100;
+
 
     private GoogleApiClient googleApiClient;
     private Location lokasiSaatIni;
@@ -79,6 +80,10 @@ public class PesertaFragment extends Fragment implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        updateLokasi();
+    }
+
+    public void updateLokasi(){
         if (ActivityCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(),
@@ -86,17 +91,16 @@ public class PesertaFragment extends Fragment implements
 
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_GPS_PERMISSION);
-            Log.d(TAG, "Tidak punya permission untuk mengakses GPS");
-
+                    MainActivity.REQUEST_GPS_PERMISSION);
+            Log.d(TAG, "Belum punya permission untuk mengakses GPS");
             return;
+        } else {
+            lokasiSaatIni = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            Log.d(TAG, "Mendapatkan posisi GPS : " + lokasiSaatIni);
+
+            txtLatitude.setText(String.valueOf(lokasiSaatIni.getLatitude()));
+            txtLongitude.setText(String.valueOf(lokasiSaatIni.getLongitude()));
         }
-
-        lokasiSaatIni = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        Log.d(TAG, "Mendapatkan posisi GPS : "+lokasiSaatIni);
-
-        txtLatitude.setText(String.valueOf(lokasiSaatIni.getLatitude()));
-        txtLongitude.setText(String.valueOf(lokasiSaatIni.getLongitude()));
     }
 
     @Override
@@ -109,17 +113,4 @@ public class PesertaFragment extends Fragment implements
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(requestCode == REQUEST_GPS_PERMISSION){
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "Permission GPS diijinkan");
-            } else {
-                Log.d(TAG, "Permission GPS tidak diijinkan, tidak dapat menggunakan location request");
-                txtLatitude.setEnabled(false);
-                txtLongitude.setEnabled(false);
-            }
-        }
-    }
 }

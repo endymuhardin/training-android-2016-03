@@ -5,12 +5,10 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.brainmatics.bpjs.bpjskesehatan.R;
@@ -20,10 +18,13 @@ import com.brainmatics.bpjs.bpjskesehatan.fragment.SettingsFragment;
 import com.brainmatics.bpjs.bpjskesehatan.fragment.TagihanFragment;
 import com.brainmatics.bpjs.bpjskesehatan.fragment.WelcomeFragment;
 
+import java.util.List;
+
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String TAG = "MainActivity";
+    public static final int REQUEST_GPS_PERMISSION = 100;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -114,4 +115,23 @@ public class MainActivity extends Activity
         actionBar.setTitle(mTitle);
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if(requestCode == REQUEST_GPS_PERMISSION){
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "Permission GPS diijinkan");
+                Fragment fr = getFragmentManager().findFragmentById(R.id.container);
+
+                if(PesertaFragment.class.isAssignableFrom(fr.getClass())){
+                    PesertaFragment pf = (PesertaFragment) fr;
+                    pf.updateLokasi();
+                }
+
+            } else {
+                Log.d(TAG, "Permission GPS tidak diijinkan, tidak dapat menggunakan location request");
+            }
+        }
+    }
 }
