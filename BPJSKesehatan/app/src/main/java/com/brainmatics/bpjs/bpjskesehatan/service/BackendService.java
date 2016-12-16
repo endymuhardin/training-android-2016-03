@@ -3,6 +3,7 @@ package com.brainmatics.bpjs.bpjskesehatan.service;
 
 import android.content.Context;
 import android.util.Base64;
+import android.util.Log;
 
 import com.brainmatics.bpjs.bpjskesehatan.db.BpjsDbHelper;
 import com.brainmatics.bpjs.bpjskesehatan.dto.FcmToken;
@@ -10,6 +11,7 @@ import com.brainmatics.bpjs.bpjskesehatan.dto.Page;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Peserta;
 import com.brainmatics.bpjs.bpjskesehatan.dto.Tagihan;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BackendService {
 
+    private static final String TAG = "BackendService";
     private static final String URL_SERVER = "https://endybpjsbackend.herokuapp.com";
     private static final String URL_DAFTAR_TAGIHAN = "/api/tagihan/{peserta}/";
     private static final String CLIENT_ID = "clientapp";
@@ -136,7 +139,9 @@ public class BackendService {
         MultipartBody.Part fotoPart =
                 MultipartBody.Part.createFormData("foto", foto.getName(), requestFile);
 
-        String pesertaJson = new Gson().toJson(peserta);
+        String pesertaJson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd").create().toJson(peserta);
+        Log.d(TAG, "Peserta : "+pesertaJson);
         RequestBody requestPeserta =
                 RequestBody.create(MediaType.parse("application/json"), pesertaJson);
         backend.simpanPeserta(requestPeserta, fotoPart).execute();
