@@ -4,12 +4,16 @@ import com.brainmatics.training.bpjs.android.dao.PesertaDao;
 import com.brainmatics.training.bpjs.android.dao.TagihanDao;
 import com.brainmatics.training.bpjs.android.entity.Peserta;
 import com.brainmatics.training.bpjs.android.entity.Tagihan;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BpjsBackendRestController {
     
     @Autowired private TagihanDao tagihanDao;
-    @Autowired private PesertaDao pesertaDao;
     
     @RequestMapping(method = RequestMethod.GET, value = "/tagihan/{peserta}/")
     public Page<Tagihan> cariTagihan(@PathVariable Peserta peserta, Pageable page){
@@ -27,5 +30,11 @@ public class BpjsBackendRestController {
     @RequestMapping(method = RequestMethod.GET, value = "/peserta/{id}/")
     public Peserta cariPesertaById(@PathVariable(name = "id") Peserta peserta){
         return peserta;
+    }
+    
+    @RequestMapping(method = RequestMethod.POST, value = "/tagihan/{peserta}/")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void insertTagihan(@RequestBody @Valid Tagihan t){
+        tagihanDao.save(t);
     }
 }
