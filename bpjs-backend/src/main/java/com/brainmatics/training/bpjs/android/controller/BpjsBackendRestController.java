@@ -45,7 +45,13 @@ public class BpjsBackendRestController {
     @RequestMapping(method = RequestMethod.POST, value = "/token/{peserta}/")
     @ResponseStatus(HttpStatus.CREATED)
     public void registrasiToken(@RequestBody @Valid FcmToken t){
-        fcmTokenDao.save(t);
+        FcmToken tokenDb = fcmTokenDao.findByPeserta(t.getPeserta());
+        if(tokenDb == null){
+            tokenDb = new FcmToken();
+            tokenDb.setPeserta(t.getPeserta());
+        }
+        tokenDb.setFcmToken(t.getFcmToken());
+        fcmTokenDao.save(tokenDb);
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/token/")

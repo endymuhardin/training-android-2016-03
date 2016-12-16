@@ -25,5 +25,6 @@ create table fcm_token (
   id_peserta varchar(36) not null,
   fcm_token varchar(255) not null,
   primary key (id),
-  foreign key (id_peserta) references peserta(id)
+  foreign key (id_peserta) references peserta(id),
+  unique (id_peserta)
 );
